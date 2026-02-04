@@ -32,7 +32,7 @@ const features: Feature[] = [
  */
 export const FeaturesSection = (): JSX.Element => {
   return (
-    <section className="container border-b-0 shadow-lg mx-auto px-6 py-20 bg-white rounded-2xl">
+    <section className="container shadow-lg mx-auto px-6 py-20 bg-white rounded-4xl border">
       <motion.h2
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

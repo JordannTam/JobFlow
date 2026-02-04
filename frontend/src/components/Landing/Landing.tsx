@@ -15,7 +15,7 @@ export const Landing = (): JSX.Element => {
   return (
     <div>
       {/* Top Section - Hero + Features with brand-light background */}
-      <div className="bg-brand-light">
+      <div className="bg-brand-light overflow-hidden">
         {/* Hero Section */}
         <HeroSection />
 
@@ -23,7 +23,7 @@ export const Landing = (): JSX.Element => {
         <div className="relative">
           {/* Background split: top half brand-light, bottom half white */}
           <div className="absolute inset-0 top-1/2 bg-white" />
-          <div className="relative z-10">
+          <div className="relative z-10 pb-6">
             <FeaturesSection />
           </div>
         </div>

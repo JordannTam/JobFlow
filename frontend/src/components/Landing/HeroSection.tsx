@@ -9,9 +9,9 @@ import { Button } from '@/components/ui/button';
  */
 export const HeroSection = (): JSX.Element => {
   return (
-    <section className="relative overflow-hidden min-h-[80vh] flex items-center">
+    <section className="relative min-h-[80vh] flex items-center">
       {/* Animated gradient background orbs */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
