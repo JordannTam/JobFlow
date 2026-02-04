@@ -2,13 +2,17 @@
 
 A full-stack serverless job application tracker built as a portfolio project. Navigate your career journey with a clean, organized dashboard.
 
+**Live Site:** https://d1tuvjjjqp76z5.cloudfront.net
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
 | Frontend | React 19 + TypeScript + Tailwind CSS v4 |
 | UI Components | shadcn/ui (Radix primitives) |
+| Icons | Lucide React |
 | Animations | Motion (Framer Motion) |
+| Hosting | S3 + CloudFront |
 | Backend | AWS Lambda (Node.js/TypeScript) |
 | Database | DynamoDB |
 | API | API Gateway REST API |
@@ -72,6 +76,13 @@ npm run test:e2e:headed   # Run with browser visible
 npm run test:e2e:report   # View test report
 ```
 
+### Frontend Deployment
+
+```bash
+cd frontend
+npm run deploy    # Build and sync to S3
+```
+
 ### Backend Deployment
 
 ```bash
@@ -105,9 +116,9 @@ Base URL: `https://j6tss5gko7.execute-api.ap-southeast-2.amazonaws.com/dev`
 - [x] Phase 1: Landing page with animations
 - [x] Phase 1: Status filtering & search
 - [x] Phase 1: URL-based app selection
+- [x] Deployment: S3 + CloudFront hosting
 - [ ] Phase 2: Authentication (Cognito)
 - [ ] Phase 2: AI Resume Generator (Claude API)
-- [ ] Deployment: S3 + CloudFront hosting
 
 ## License
 
