@@ -76,23 +76,69 @@ Base URL: `https://j6tss5gko7.execute-api.ap-southeast-2.amazonaws.com/dev`
 |------|-------------|---------|
 | `useApplications()` | Manages application state and API calls | `{ applications, loading, error, createApplication, updateApplication, deleteApplication, refetch }` |
 
+## Brand Guide
+
+### Brand Name
+**JobPilot** - Navigate your career journey
+
+### Typography
+**Font Family:** Helvetica (system font stack)
+- Bold (700) - Headings, important text
+- SemiBold (600) - Subheadings, buttons
+- Medium (500) - Labels, emphasis
+- Regular (400) - Body text
+
+### Color Scheme
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Primary Teal | `#2A8E9E` | Buttons, links, accents, icons |
+| Light Background | `#E9F3F4` | Page backgrounds, cards, hover states |
+| Dark Navy | `#180D39` | Headings, important text |
+| Near Black | `#1D1E20` | Body text, secondary text |
+
+### Tailwind Custom Classes
+```css
+/* Primary */
+bg-brand: #2A8E9E
+text-brand: #2A8E9E
+border-brand: #2A8E9E
+
+/* Light background */
+bg-brand-light: #E9F3F4
+
+/* Text colors */
+text-brand-dark: #180D39
+text-brand-body: #1D1E20
+```
+
+### Status Badges (Functional Colors - Unchanged)
+| Status | Colors |
+|--------|--------|
+| Applied | `bg-blue-100 text-blue-800` |
+| Interview | `bg-yellow-100 text-yellow-800` |
+| Offer | `bg-green-100 text-green-800` |
+| Rejected | `bg-red-100 text-red-800` |
+
+---
+
 ## Design Reference
 **Primary Inspiration:** [JobJourney](https://www.jobjourney.me/) — similar job tracker app
 
-**Secondary Inspiration:** [Linear](https://linear.app)
+**Secondary Inspiration:** [Linear](https://linear.app), [Finpay](https://finpay.com)
 
 ### Why These References
 - JobJourney: Same use case, proven UX for job tracking
 - Linear: Clean list/table views, status chips, minimal data looks good
+- Finpay: Clean teal color scheme, professional feel
 
 ### Design Principles
 | Element | Style |
 |---------|-------|
 | Layout | Clean, lots of whitespace |
-| Colors | Neutral base, colored status badges |
-| Typography | Clear hierarchy, no clutter |
+| Colors | Teal primary (#2A8E9E), light teal backgrounds (#E9F3F4) |
+| Typography | Helvetica, clear hierarchy, no clutter |
 | Tables | Simple rows, subtle borders |
-| Buttons | Minimal, clear actions |
+| Buttons | Primary teal, minimal, clear actions |
 | Status badges | `applied` = blue, `interview` = yellow, `offer` = green, `rejected` = red |
 
 ### Reference Screenshots

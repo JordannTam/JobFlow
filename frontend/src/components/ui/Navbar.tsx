@@ -14,8 +14,8 @@ const NavLink = ({ to, children, isActive }: NavLinkProps): JSX.Element => (
   <Link to={to}>
     <span
       className={cn(
-        'text-sm font-medium transition-colors hover:text-gray-900',
-        isActive ? 'text-gray-900' : 'text-gray-500'
+        'text-sm font-medium transition-colors hover:text-brand',
+        isActive ? 'text-brand' : 'text-brand-body'
       )}
     >
       {children}
@@ -52,8 +52,8 @@ export const Navbar = (): JSX.Element => {
           className="flex items-center justify-between"
         >
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors">
-            JobTracker
+          <Link to="/" className="text-xl font-bold text-brand-dark hover:text-brand transition-colors">
+            JobPilot
           </Link>
 
           {/* Navigation Links */}
@@ -65,7 +65,7 @@ export const Navbar = (): JSX.Element => {
               Applications
             </NavLink>
             <Link to="/applications">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-brand-body hover:text-brand hover:bg-brand-light cursor-pointer">
                 Sign In
               </Button>
             </Link>

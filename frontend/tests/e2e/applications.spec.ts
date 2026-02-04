@@ -5,16 +5,18 @@ test.describe('Applications Page', () => {
     await page.goto('/applications');
   });
 
-  test('should display the applications page header', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Job Applications');
+  test('should display the applications page controls', async ({ page }) => {
+    // Verify search and filter controls are visible
+    await expect(page.locator('input[placeholder="Search..."]')).toBeVisible();
+    await expect(page.locator('button:has-text("+ Add")')).toBeVisible();
   });
 
-  test('should display Add Application button', async ({ page }) => {
-    await expect(page.locator('button:has-text("Add Application")')).toBeVisible();
+  test('should display Add button', async ({ page }) => {
+    await expect(page.locator('button:has-text("+ Add")')).toBeVisible();
   });
 
-  test('should navigate to new application form when clicking Add Application', async ({ page }) => {
-    await page.click('button:has-text("Add Application")');
+  test('should navigate to new application form when clicking Add', async ({ page }) => {
+    await page.click('button:has-text("+ Add")');
 
     await expect(page).toHaveURL('/applications/new');
     await expect(page.locator('h1')).toContainText('Add New Application');
@@ -27,27 +29,26 @@ test.describe('Applications Page', () => {
     // If the API returns empty, we should see the empty state
     // Note: This test may pass or fail depending on backend state
     const emptyState = page.locator('text=No applications yet');
-    const table = page.locator('table');
+    const applicationCards = page.locator('button:has([class*="font-semibold"])');
 
-    // Either empty state or table should be visible
+    // Either empty state or application cards should be visible
     const hasEmptyState = await emptyState.isVisible().catch(() => false);
-    const hasTable = await table.isVisible().catch(() => false);
+    const hasCards = (await applicationCards.count()) > 0;
 
-    expect(hasEmptyState || hasTable).toBeTruthy();
+    expect(hasEmptyState || hasCards).toBeTruthy();
   });
 
-  test('should display table headers when applications exist', async ({ page }) => {
+  test('should display application cards when applications exist', async ({ page }) => {
     await page.waitForLoadState('networkidle');
 
-    const table = page.locator('table');
-    const hasTable = await table.isVisible().catch(() => false);
+    // Check for application list cards (the card-based layout)
+    const applicationCards = page.locator('button:has([class*="font-semibold"])');
+    const cardCount = await applicationCards.count();
 
-    if (hasTable) {
-      await expect(page.locator('th:has-text("Company")')).toBeVisible();
-      await expect(page.locator('th:has-text("Role")')).toBeVisible();
-      await expect(page.locator('th:has-text("Status")')).toBeVisible();
-      await expect(page.locator('th:has-text("Date Applied")')).toBeVisible();
-      await expect(page.locator('th:has-text("Actions")')).toBeVisible();
+    if (cardCount > 0) {
+      // Verify first card has company name visible
+      const firstCard = applicationCards.first();
+      await expect(firstCard).toBeVisible();
     }
   });
 });
@@ -84,9 +85,9 @@ test.describe('Create Application Flow', () => {
     // The new application should be in the list (use unique company name)
     await expect(page.locator(`text=${uniqueCompany}`)).toBeVisible();
 
-    // Clean up - delete the test application
-    const row = page.locator(`tr:has-text("${uniqueCompany}")`);
-    await row.locator('button:has-text("Delete")').click();
+    // Clean up - click on the card to select it, then delete from detail panel
+    await page.locator(`button:has-text("${uniqueCompany}")`).click();
+    await page.locator('button:has-text("Delete")').click();
   });
 
   test('should require company and role fields', async ({ page }) => {

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 /**
  * Full CRUD flow tests for job applications.
- * These tests run in sequence and depend on each other.
+ * These tests use the Discord-style card layout with detail panel.
  */
 test.describe('Application CRUD Operations', () => {
   test('should create, view, edit, and delete an application', async ({ page }) => {
@@ -28,16 +28,20 @@ test.describe('Application CRUD Operations', () => {
     await expect(page).toHaveURL('/applications');
     await page.waitForLoadState('networkidle');
 
-    // Verify application appears in list (use unique company name)
+    // Verify application appears in the card list
     await expect(page.locator(`text=${testCompany}`)).toBeVisible();
 
-    // 2. VIEW - Verify table row has correct data
-    const row = page.locator(`tr:has-text("${testCompany}")`);
-    await expect(row).toBeVisible();
-    await expect(row.locator('text=Applied')).toBeVisible(); // Default status
+    // 2. VIEW - Click on card to view details in right panel
+    await page.locator(`button:has-text("${testCompany}")`).click();
 
-    // 3. EDIT - Click edit button and modify application
-    await row.locator('button:has-text("Edit")').first().click();
+    // Verify detail panel shows the application info (use h2 for company, p.text-lg for role)
+    await expect(page.locator('h2', { hasText: testCompany })).toBeVisible();
+    // Role appears in detail panel as p.text-lg
+    await expect(page.locator('.w-7\\/10 p.text-lg', { hasText: testRole })).toBeVisible();
+
+    // 3. EDIT - Click edit button in detail panel
+    // Get the Edit button in the detail panel (bottom actions area)
+    await page.locator('.w-7\\/10 button:has-text("Edit")').click();
 
     await expect(page).toHaveURL(/\/applications\/[^/]+\/edit/);
     await expect(page.locator('h1')).toContainText('Edit Application');
@@ -63,19 +67,19 @@ test.describe('Application CRUD Operations', () => {
     await expect(page).toHaveURL('/applications');
     await page.waitForLoadState('networkidle');
 
-    // Verify updates appear in list (check the row still exists with new role)
-    const updatedRow = page.locator(`tr:has-text("${testCompany}")`);
-    await expect(updatedRow).toBeVisible();
-    await expect(updatedRow.locator(`text=${updatedRole}`)).toBeVisible();
+    // Verify updates appear - click on card to see updated details
+    await page.locator(`button:has-text("${testCompany}")`).click();
+    // Updated role should appear in the detail panel
+    await expect(page.locator('.w-7\\/10 p.text-lg', { hasText: updatedRole })).toBeVisible();
 
-    // 4. DELETE - Remove the application
-    await updatedRow.locator('button:has-text("Delete")').first().click();
+    // 4. DELETE - Click delete button in detail panel
+    await page.locator('.w-7\\/10 button:has-text("Delete")').click();
 
     // Wait for deletion to complete
     await page.waitForLoadState('networkidle');
 
-    // Verify application is removed
-    await expect(page.locator(`text=${testCompany}`)).not.toBeVisible();
+    // Verify application is removed from card list (check the button card is gone)
+    await expect(page.locator(`button:has-text("${testCompany}")`)).not.toBeVisible();
   });
 });
 
@@ -102,9 +106,11 @@ test.describe('Edit Application Page', () => {
     await expect(page).toHaveURL('/applications');
     await page.waitForLoadState('networkidle');
 
-    // Click edit on the new application (use unique company name)
-    const row = page.locator(`tr:has-text("${testCompany}")`);
-    await row.locator('button:has-text("Edit")').first().click();
+    // Click on the card to select it
+    await page.locator(`button:has-text("${testCompany}")`).click();
+
+    // Click edit in detail panel
+    await page.locator('.w-7\\/10 button:has-text("Edit")').click();
 
     // Click cancel
     await page.click('button:has-text("Cancel")');
@@ -113,9 +119,7 @@ test.describe('Edit Application Page', () => {
 
     // Clean up - delete the test application
     await page.waitForLoadState('networkidle');
-    const cleanupRow = page.locator(`tr:has-text("${testCompany}")`);
-    if (await cleanupRow.isVisible()) {
-      await cleanupRow.locator('button:has-text("Delete")').first().click();
-    }
+    await page.locator(`button:has-text("${testCompany}")`).click();
+    await page.locator('.w-7\\/10 button:has-text("Delete")').click();
   });
 });

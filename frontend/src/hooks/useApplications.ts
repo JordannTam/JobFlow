@@ -40,7 +40,6 @@ export const useApplications = (): UseApplicationsReturn => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
   const fetchApplications = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -56,22 +55,36 @@ export const useApplications = (): UseApplicationsReturn => {
 
   useEffect(() => {
     fetchApplications();
-  }, [fetchApplications])
-
+  }, [fetchApplications]);
 
   const createApplication = useCallback(async (data: CreateApplicationInput) => {
-    await api.createApplication(data);
-    await fetchApplications();
+    try {
+      await api.createApplication(data);
+      await fetchApplications();
+    } catch (err) {
+      setError((err as Error).message);
+      throw err;
+    }
   }, [fetchApplications]);
 
   const updateApplication = useCallback(async (id: string, data: UpdateApplicationInput) => {
-    await api.updateApplication(id, data);
-    await fetchApplications();
+    try {
+      await api.updateApplication(id, data);
+      await fetchApplications();
+    } catch (err) {
+      setError((err as Error).message);
+      throw err;
+    }
   }, [fetchApplications]);
 
   const deleteApplication = useCallback(async (id: string) => {
-    await api.deleteApplication(id);
-    await fetchApplications();
+    try {
+      await api.deleteApplication(id);
+      await fetchApplications();
+    } catch (err) {
+      setError((err as Error).message);
+      throw err;
+    }
   }, [fetchApplications]);
 
   return {
@@ -84,5 +97,3 @@ export const useApplications = (): UseApplicationsReturn => {
     refetch: fetchApplications,
   };
 };
-
-

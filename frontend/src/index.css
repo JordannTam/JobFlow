@@ -4,6 +4,15 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Brand Colors */
+  --color-brand: #2A8E9E;
+  --color-brand-light: #E9F3F4;
+  --color-brand-dark: #180D39;
+  --color-brand-body: #1D1E20;
+
+  /* Font Family */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -47,12 +56,12 @@
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: #1D1E20;
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: #1D1E20;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --popover-foreground: #1D1E20;
+  --primary: #2A8E9E;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -119,5 +128,40 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  /* Brand color utilities */
+  .bg-brand {
+    background-color: #2A8E9E;
+  }
+  .bg-brand-light {
+    background-color: #E9F3F4;
+  }
+  .text-brand {
+    color: #2A8E9E;
+  }
+  .text-brand-dark {
+    color: #180D39;
+  }
+  .text-brand-body {
+    color: #1D1E20;
+  }
+  .border-brand {
+    border-color: #2A8E9E;
+  }
+  .hover\:bg-brand-dark:hover {
+    background-color: #238691;
   }
 }

@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, ScanCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, PutCommand, ScanCommand, DeleteCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
@@ -51,6 +51,26 @@ const handleGet = async (): Promise<APIGatewayProxyResult> => {
   }
 };
 
+const handleGetSingle = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  try {
+    if (!event.pathParameters?.id) {
+      return response(400, 'No id provided')
+    }
+
+    const id = event.pathParameters.id
+    const command = new GetCommand({
+      TableName: 'JobApplications',
+      Key: {id}
+    })
+    
+    const result = await docClient.send(command);
+    return response(200, { application: result.Item})
+
+  } catch (e) {
+    return response(500, 'Dynamo Fail');
+  }
+}
+
 const handleDelete = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   try {
     if (!event.pathParameters?.id) {
@@ -95,7 +115,6 @@ const handlePut = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const method = event.httpMethod;
-  console.log('Event:', JSON.stringify(event));
 
   // Handle preflight OPTIONS request
   if (method === 'OPTIONS') {
@@ -106,7 +125,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     case 'POST':
       return handlePost(event);
     case 'GET':
-      return handleGet();
+      if (event.pathParameters?.id) {
+        return handleGetSingle(event);
+      } else {
+        return handleGet();
+      }
     case 'DELETE':
       return handleDelete(event);
     case 'PUT':

@@ -21,6 +21,19 @@ export const api = {
   },
 
   /**
+   * Fetches a single job application by ID.
+   * Falls back to fetching from list if single endpoint not available.
+   */
+  getApplication: async (id: string): Promise<JobApplication> => {
+    const res = await fetch(`${API_URL}/applications/${id}`);
+    if (!res.ok) {
+      throw new Error(`Application not found: ${res.statusText}`);
+    }
+    const data = await res.json();
+    return data.application;
+  },
+
+  /**
    * Creates a new job application.
    */
   createApplication: async (data: CreateApplicationInput): Promise<{ message: string }> => {

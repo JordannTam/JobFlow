@@ -14,13 +14,14 @@ import { Navbar } from './components/ui/Navbar';
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="min-h-screen bg-brand-light">
         <Navbar />
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/applications" element={<ApplicationsPage />} />
           <Route path="/applications/new" element={<NewApplicationPage />} />
+          <Route path="/applications/:id" element={<ApplicationsPage />} />
           <Route path="/applications/:id/edit" element={<EditApplicationPage />} />
         </Routes>
       </div>
