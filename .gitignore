@@ -37,3 +37,4 @@ coverage/
 # AWS
 .aws-sam/
 samconfig.toml
+*.pkg
