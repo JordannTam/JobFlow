@@ -9,13 +9,19 @@ Full-stack serverless job application tracker. Portfolio piece to impress interv
 - DynamoDB table: `JobApplications` (partition key: `id`)
 - API Gateway REST API deployed
 
+**Frontend: DEPLOYED ✅**
+- S3 bucket: `jobflow-frontend`
+- CloudFront: https://d1tuvjjjqp76z5.cloudfront.net
+- Deploy command: `npm run deploy`
+
 ## Tech Stack
 | Layer | Tech |
 |-------|------|
 | Frontend | React + TypeScript + Tailwind CSS v4 |
 | UI Components | shadcn/ui (Radix primitives) |
+| Icons | Lucide React |
 | Animations | Motion (Framer Motion) — Landing page only |
-| Hosting | S3 + CloudFront (to setup) |
+| Hosting | S3 + CloudFront |
 | API | API Gateway + Lambda (Node.js/TypeScript) |
 | Database | DynamoDB |
 | Auth | Cognito (Phase 2) |
@@ -23,15 +29,13 @@ Full-stack serverless job application tracker. Portfolio piece to impress interv
 
 ### Installed packages
 ```bash
-# Already installed
 npm create vite@latest job-tracker-frontend -- --template react-ts
 tailwindcss v4 (via @tailwindcss/vite)
 npx shadcn@latest init
 npx shadcn@latest add button dialog input label badge select textarea table
-
-# Still needed
 npm install react-router-dom
 npm install motion
+npm install lucide-react
 ```
 
 ## API Interface Specification
